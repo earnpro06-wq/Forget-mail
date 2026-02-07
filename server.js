@@ -6,11 +6,19 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-// ১. ফায়ারবেস সেটআপ (আপনার দেওয়া তথ্য অনুযায়ী)
+// ১. ফায়ারবেস সেটআপ (আপনার নতুন JSON ফাইল অনুযায়ী আপডেট করা হয়েছে)
 const serviceAccount = {
+  "type": "service_account",
   "project_id": "bet-baji-vip",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDD5LRY++1pF3Wn\njrJd+seePn4vQIFu7ohZur7TBgn02vwV6bwQJAj0Qnwj6e/3Eorw82wJxyQlkcVl\nLX58TfMg3H9/OZmVhaWLPzcfXM3r4nd7/JcQybA66SanTk93XvT8wiTFUpdc7c0O\nUc/CPL6ZReTnhx1+Y4Himp44EZ37BFJHQDLOshTOOGEdhzDugdlwfJiX9uHq196V\n9U4cftzBW95PVdcPuD/9fHbL++bqjJklRXheBCYz1ZZCtghWDGoisfT31+W5fw7x\nMdSMsf8LSr6UOrmNZSuhs0hsMWMhKql71wtWGBio0vliQ0pvdKUEBFDay/lhyVL0\nR1W/m40FAgMBAAECggEAVgzebiJIYTw1aiPEVYUmb+xquK4AzW6JxcTDM2Z5NC6H\nwsZ4Xqy9pDKaXppSV3m1P+/mGwt35Or6R54q7Ea/kMVbWlM+lJBvLlJYD/ZP3JkQ\PI4x++Vk/RPS73Z2cOzs+CT+SxGjPOaXB33Hoj7VyPWLfmr7eTwT36tk6iNO/uba\n14bKBd8MVF6m1bG25PRIzGTOIZs7/HXnnjlDr+KZRXeSbNv5pWhmXQyH1gqQ3tKI\nlc6ENRRF+GSZw1uua+ZwmVlVc2b3d336sWlN23DnTQ/fL2SgBEGCs056S2uYgz8Z\nWC1GTCZ39qPEeKgQPTUxHY9U+6PC6Dqr9bi9BsjeRwKBgQD3ZM+y1C3C7EauFXjG\nmqcdDVSRLV49isOjLupXseZdNjqSfQqdYUftMdCrI/tI/oEvU76W5QmuB4ZUuAyn\nLLKtqB0G448W13HJ8iCsQ/6y3k5Mdvyts/29dHANUpIa6rMsPfDFxgQfVu+Q8Nle\n9vhJY1ZuIkxXG7h35F4G0TuqAwKBgQDKtUBYz3anozePnBxM00yefmpLksKZqaJB\nxvm61M3wvTxkdEHW3Fq+VjY3XYQI2skDqwEBREJ+SQAbg3RudHrDRSSrTum6FX69\ZqVsTfU7nALZvo6vCRN+ui31kQosm4qrXm5yQuXuqm/qm1Y7naS45xTGdNILTWkJ\nMVBla4BCVwKBgCMyaIpcvZX536Rs0Z4P6q6rctikx7+humvBBP4tBUVFrdehip0R\ndhY8/B8dI2cjLmX5WChHtbTYxTfQZ5xxM4qZXGfagEUTqdC9bgCUO+xezGz8kL51\n2SfXJQoAMWE6+vrUZSj+HyAGUlcgrQxhvrlSNL2+i3XL7l++BGoOwDZAoGBALbL\nihJMS8jSQ7lKYq7Y4MAQaZRq7Pea5EoCv5K+clQEoiBIQlMadO4tWkjFGNrPSPP4\n0jgtMPUmqWUmPumYOlg60t10lQqMdbUgik5HYrz1bBClaY/oVF80T1uiBpXBUeRF\njL2XHDgEFFZw6+totnFTWQW5tOwiS3TRtpkuvwOTAoGBAOMbWLaTtyUuYHQZDDcR\noNq5WIvLQaKWWr35sUhunDL9x8+cVvcRzYWYKscKaUyGkYN23vo8GYTx8CUdtEIk\ntY0x10+UXDlzfHroF31X+1h/fR16IHInCd61UODCTgBBARFhBiuHADBNKjUZ9zXs\nABXI5MtjI9H9a1CaSCoHn1jq\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-fbsvc@bet-baji-vip.iam.gserviceaccount.com"
+  "private_key_id": "4086db5c480b45dd4b61c08a635e162c5230b668",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC9fOcZRdd1slDu\nbNQB/JQR810Aw4JpuRhbQ9woSFrnN4qozCTWa0vQHtU/yNR364jywgS6C1Lywzu8\nBJkPFTYuW0o2vz00rlWaAbeREVu6A42rOe4BycGTEGsMFOAgxZLJXhvi/wWSgf10\nyfWBK42H+PC1q2kh5Sj6/ScdJJf9K6erdAeZy9Ta/HFKMIpT+lZXgJA4NMDqxp8h\ndjEOhwWNpHaW0e9z7NJNUB+0lwoXQ4FgiibLZIec34XsKucqKMOr/tRbtkHWc9Vw\n/aSbTCRRzVp0foad/0fAaX93mHtTy5upD5ovuosqaWMgJAb7Kvfn48QfxcTKDcKP\nZzkjCTy1AgMBAAECggEAAgfJ2Sc6rw/tVpSzc97/Pi7/pt+xcM0TMf0o6YSW9sXN\nVlAzr9l/+zetXMzb2/oZ4lIKZ2zyI1hMtk/NTRBS343KXopPj1Yz5B3TF/qZ40Ug\n+j35ayr8iEUjhIJfwXIkh8Rao6TMbDy42MzGNO9gyZ11BNlUm9CfDwtx5RnMiCGw\nJFysGUKotqNxOIBngYQp7C72viR6wxYeeWi+Ex+RvTPmXhziuP6kR8a7hyheXFpt\n9//XEtCZ1FdgKOmvZQJnEIR0CVhD1mh/vExpXGPqnKsozmh7YiQkGjHaG7IFWQJu\nNHaUgi4lOckdl6GJgyZJU0E5GS/PDeFyWcRgOqf4QQKBgQDqQBhZqzKy02ZiRyNn\neikolwNzWAg+v2WBeD34E1dir/voSWQc8w8lr37vqZfeX6RNm+5NcGeI6Ta0d/LO\n/nfgCb7qdUtVFQKh5N3RYbNgsj5VRd/B4v2nVMisXdCIbqCZ2zV8JayEa40WdjT7\n1QPBdA+TTYsfk7wKNoAyYEHfQQKBgQDPFNjSryo6+8XddGDjFbj1fFxUs/uxzzGF\nXPODH5Z8w1xXQHyOGqlDHH2wCZOIaZhXPuQvJhDmqb32E5Sq1ABVIHdN8xEW+rwn\nUWEceqhY9q0x/wiP07H5+bmvcwwC7IoqZfHSqpRlAUPfwgmaWJ/irwyoPeTj2Cz/\nz5HQ41U0dQKBgQCMobg8tRP12gaAf/bYW7W0AZ13tOUWTq+w37BMa8gtnjucw9rP\nqnhwhoCtf2KGhWLNmQyi/xWZU3GdPNnPvWPYY+FzPsHgLYHsEcu9tWsMZVYYuZ9Q\n9maT+8mR+ayFC+1tEPZ2NuPwh+UnFAZRHhxoGrZzF72rUnU0qG2kULebQQKBgQCe\nZIO0IudaVlnyGaJCD8t5ebXl1AUg7CokqARatz6UD5oB4wFicGInQxOgIrMGFD7B\n/QjsR2GGDS+PmUqNn7rhYgPfS5w2x3JDYKu27Nr3sTaolzolSPdJDQpKeOUnF2ZX\nJ8LgMDlxSJZyACj4NfGVoe88gJsi66b/w/T0oe36QQKBgFO0HPqY1anrh/lTTpmh\ni9KvP8GziJmirHQ46h71oUjmYILnl4yAayRHJmVYt2UdJjsib3fsmwnJS3HhRF7X\nm27nMZ89UHVH7FiV9n17/EK9EvDQRPTGwOQFUsth1LhjOVIhBImXG969XBMNelc1\nEj/lKwur9qJlNklrTqnPvSaB\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@bet-baji-vip.iam.gserviceaccount.com",
+  "client_id": "106184706095971470150",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40bet-baji-vip.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
 };
 
 admin.initializeApp({
@@ -26,8 +34,8 @@ app.post('/forgot-password', async (req, res) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'earnpro06@gmail.com',
-            pass: 'pknkpxyzrmtgxhua'
+            user: 'earnpro06@gmail.com', // আপনার জিমেইল
+            pass: 'pknkpxyzrmtgxhua'    // আপনার জিমেইল অ্যাপ পাসওয়ার্ড
         }
     });
 
@@ -81,7 +89,6 @@ app.post('/verify-code', async (req, res) => {
 app.post('/update-password', async (req, res) => {
     const { email, newPassword } = req.body;
     try {
-        // এখানে আপনার ইউজার কালেকশনের নাম 'users' ধরে নিয়ে পাসওয়ার্ড আপডেট করা হচ্ছে
         const userQuery = await db.collection("users").where("email", "==", email).get();
         
         if (userQuery.empty) {
@@ -90,10 +97,9 @@ app.post('/update-password', async (req, res) => {
 
         const userDocId = userQuery.docs[0].id;
         await db.collection("users").doc(userDocId).update({
-            password: newPassword // নিরাপত্তা স্বার্থে পরে এখানে হ্যাশিং যোগ করতে পারেন
+            password: newPassword 
         });
 
-        // পাসওয়ার্ড আপডেট হলে রিসেট রিকোয়েস্টটি ডিলিট করে দেওয়া ভালো
         await db.collection("password_resets").doc(email).delete();
 
         res.status(200).json({ success: true, message: "পাসওয়ার্ড সফলভাবে আপডেট হয়েছে!" });
@@ -102,7 +108,6 @@ app.post('/update-password', async (req, res) => {
     }
 });
 
-// ৫. সার্ভার পোর্ট সেটআপ
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`সার্ভার চলছে পোর্ট: ${PORT}`);
