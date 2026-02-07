@@ -1,12 +1,16 @@
 const express = require('express');
+const cors = require('cors'); // ১. CORS ইমপোর্ট করা হয়েছে
 const nodemailer = require('nodemailer');
 const admin = require("firebase-admin");
 const bodyParser = require('body-parser');
 
 const app = express();
+
+// ২. মিডলওয়্যার সেটআপ
+app.use(cors()); // এটি আপনার ওয়েবসাইটকে এপিআই কল করার অনুমতি দেবে
 app.use(bodyParser.json());
 
-// ১. ফায়ারবেস সেটআপ (আপনার নতুন JSON ফাইল অনুযায়ী আপডেট করা হয়েছে)
+// ১. ফায়ারবেস সেটআপ
 const serviceAccount = {
   "type": "service_account",
   "project_id": "bet-baji-vip",
@@ -26,6 +30,11 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
+// সার্ভার সচল আছে কি না তা চেক করার জন্য একটি রুট (Render-এ এটি কাজে লাগে)
+app.get('/', (req, res) => {
+    res.send("BET-BAJI API ইজ রানিং...");
+});
+
 // ২. পাসওয়ার্ড ভুলে গেলে ওটিপি পাঠানোর এপিআই
 app.post('/forgot-password', async (req, res) => {
     const { email } = req.body;
@@ -34,8 +43,8 @@ app.post('/forgot-password', async (req, res) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'earnpro06@gmail.com', // আপনার জিমেইল
-            pass: 'pknkpxyzrmtgxhua'    // আপনার জিমেইল অ্যাপ পাসওয়ার্ড
+            user: 'earnpro06@gmail.com',
+            pass: 'pknkpxyzrmtgxhua' // এটি আপনার জিমেইল অ্যাপ পাসওয়ার্ড
         }
     });
 
@@ -63,6 +72,7 @@ app.post('/forgot-password', async (req, res) => {
         });
         res.status(200).json({ success: true, message: "ইমেইল পাঠানো হয়েছে!" });
     } catch (error) {
+        console.error("Email Error:", error);
         res.status(500).json({ success: false, message: "ইমেইল পাঠাতে সমস্যা হয়েছে।" });
     }
 });
